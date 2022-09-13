@@ -1,9 +1,16 @@
-FROM node:16.17.0
+FROM node:16.17.0-alpine as builder
+
+RUN mkdir -p /app
+
 
 WORKDIR /app
 
-COPY package.json /app/package.json
+ENV PATH /app/node_modules/.bin:$PATH
 
-RUN npm install
+COPY package.json /app
 
-CMD ["npm", "start"]
+
+RUN npm install --silent
+
+COPY . .
+

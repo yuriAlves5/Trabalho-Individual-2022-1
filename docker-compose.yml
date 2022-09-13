@@ -1,0 +1,30 @@
+version: '3.2'
+
+services:
+  db:
+      image: postgres:14
+      restart: always
+      container_name: db
+      env_file:
+        - .env
+      ports:
+          - "5434:5432"
+      networks:
+          - connection
+  backend:
+      image: python:3.8
+      container_name: backend
+      build: ./library_back
+      ports:
+          - '8000:8000'
+      depends_on:
+          - db
+      env_file:
+        - .env
+      networks:
+          - connection
+      command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
+
+networks:
+  connection:
+      driver: bridge
