@@ -15,6 +15,7 @@ services:
       image: python:3.8
       container_name: backend
       build: ./library_back
+      restart: always
       ports:
           - '8000:8000'
       depends_on:
@@ -34,6 +35,19 @@ services:
       restart: always
       depends_on:
           - backend
+      networks:
+          - connection
+  
+  nginx:
+      image: nginx:1.15-alpine
+      container_name: nginx
+      restart: always
+      ports:
+          - '80:80'
+      volumes:
+          - ./nginx.conf:/etc/nginx/nginx.conf
+      depends_on:
+          - frontend
       networks:
           - connection
 
