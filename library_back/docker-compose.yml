@@ -5,12 +5,8 @@ services:
     image: postgres:13.2
     container_name: db
     restart: always
-    environment:
-      POSTGRES_PASSWORD: password
-      POSTGRES_USER: postgres
-      POSTGRES_DB: library_db
-      POSTGRES_Host: postgresql_db
-      POSTGRES_PORT: 5432
+    env_file:
+      - .env
     volumes:
       - ./db:/var/lib/postgresql/data
     ports:
