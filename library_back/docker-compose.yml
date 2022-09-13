@@ -1,0 +1,26 @@
+version: '3.9'
+
+services:
+  db: 
+    image: postgres:13.2
+    container_name: db
+    restart: always
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: db
+    volumes:
+      - ./db:/var/lib/postgresql/data
+    ports:
+      - 5432:5432
+  
+  server:
+    image: python:3.9
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver
+
+volumes:
+  db:
