@@ -25,6 +25,18 @@ services:
           - connection
       command: bash -c "python manage.py makemigrations && python manage.py migrate && python manage.py runserver 0.0.0.0:8000"
 
+  frontend:
+      image: node:14
+      container_name: frontend
+      build: ./library_front
+      ports:
+          - '3000:3000'
+      restart: always
+      depends_on:
+          - backend
+      networks:
+          - connection
+
 networks:
   connection:
       driver: bridge
